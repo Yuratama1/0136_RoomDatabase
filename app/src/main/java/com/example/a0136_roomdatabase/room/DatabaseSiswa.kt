@@ -1,17 +1,34 @@
 package com.example.a0136_roomdatabase.room
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 
-@Dao
-interface SiswaDao {
+@Database(
+    entities = [Siswa::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class DatabaseSiswa : RoomDatabase() {
 
-    @Query("SELECT * FROM tblSiswa ORDER BY nama ASC")
-    fun getAllSiswa(): Flow<List<Siswa>>
+    abstract fun siswaDao(): SiswaDao
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(siswa: Siswa)
+    companion object {
+
+        @Volatile
+        private var Instance: DatabaseSiswa? = null
+
+        fun getDatabase(context: Context): DatabaseSiswa {
+            return Instance ?: synchronized(this) {
+                Room.databaseBuilder(
+                    context,
+                    DatabaseSiswa::class.java,
+                    "siswa_database"
+                ).build().also {
+                    Instance = it
+                }
+            }
+        }
+    }
 }
