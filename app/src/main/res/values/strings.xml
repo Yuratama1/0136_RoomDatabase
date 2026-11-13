@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">0136_RoomDatabase</string>
+    <string name="entry_siswa">Tambah Siswa</string>
 </resources>
