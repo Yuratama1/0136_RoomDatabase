@@ -1,37 +1,42 @@
 package com.example.a0136_roomdatabase.viewmodel.provider
 
+import android.app.Application
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.a0136_roomdatabase.AplikasiSiswa
+import com.example.a0136_roomdatabase.viewmodel.DetailViewModel
+import com.example.a0136_roomdatabase.viewmodel.EditViewModel
+import com.example.a0136_roomdatabase.viewmodel.EntryViewModel
+import com.example.a0136_roomdatabase.viewmodel.HomeViewModel
 
 object PenyediaViewModel {
 
     val Factory = viewModelFactory {
 
         initializer {
-            _root_ide_package_.com.example.a0136_roomdatabase.viewmodel.HomeViewModel(
+            HomeViewModel(
                 aplikasiSiswa().container.repositoriSiswa
             )
         }
 
         initializer {
-            _root_ide_package_.com.example.a0136_roomdatabase.viewmodel.EntryViewModel(
+            EntryViewModel(
                 aplikasiSiswa().container.repositoriSiswa
             )
         }
 
         initializer {
-            _root_ide_package_.com.example.a0136_roomdatabase.viewmodel.DetailViewModel(
+            DetailViewModel(
                 this.createSavedStateHandle(),
                 aplikasiSiswa().container.repositoriSiswa
             )
         }
 
         initializer {
-            _root_ide_package_.com.example.a0136_roomdatabase.viewmodel.EditViewModel(
+            EditViewModel(
                 this.createSavedStateHandle(),
                 aplikasiSiswa().container.repositoriSiswa
             )
@@ -39,6 +44,9 @@ object PenyediaViewModel {
     }
 }
 
+/**
+ * Fungsi ekstensi untuk mendapatkan objek AplikasiSiswa
+ * dari Application yang tersedia di CreationExtras.
+ */
 fun CreationExtras.aplikasiSiswa(): AplikasiSiswa =
-    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
-            as AplikasiSiswa)
+    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as AplikasiSiswa)
